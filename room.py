@@ -64,9 +64,11 @@ def room_topology_generation(dim=(10,10)):
         ]
 
     ]
+    import random
+
     directions=[(1,0),(0,1),(-1,0),(0,-1)]
     direction=random.sample(directions,1)[0]
-
+    dim_x,dim_y=(10,10)
     position=np.array([
         random.randint(1,dim_x-1),
         random.randint(1,dim_y-1)
@@ -85,4 +87,18 @@ def room_topology_generation(dim=(10,10)):
         mask=random.sample(masks,1)[0]
         mask_start=position-1
         level[mask_start[0]:mask_start[0]+3,mask_start[1]:mask_start[1]+3]+=mask
+
+    level[level>0]=1
+    level[:,[0,dim_y-1]]=0
+    level[[0,dim_x-1],:]=0
+    return level
+
+def place_boxes_and_player(room,num_boxes,second_player):
+    possible_positions=np.where(room==1)
+    num_possible_positions=possible_positions[0].shape[0]
+    num_players=2 if second_player else 1
+
+
+
+
 

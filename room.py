@@ -94,11 +94,60 @@ def room_topology_generation(dim=(10,10)):
     return level
 
 def place_boxes_and_player(room,num_boxes,second_player):
+    """room = np.array([[0, 1, 0, 1],
+                     [1, 0, 0, 1],
+                     [0, 1, 1, 0]])
+    """
     possible_positions=np.where(room==1)
     num_possible_positions=possible_positions[0].shape[0]
     num_players=2 if second_player else 1
 
+    if num_possible_positions<=num_boxes+num_players:
+        raise  RuntimeError("not enough (#{}) to place {} player and {} boxes".format(num_possible_positions,num_players,num_boxes))
+
+    ind=np.random.randint(num_possible_positions)
+    player_position=possible_positions[0][ind],possible_positions[1][ind]
+    room[player_position]=5
+
+    if second_player:
+        ind=np.random.randint(num_possible_positions)
+        player_position=possible_positions[0][ind],possible_positions[1][ind]
+        room[player_position]=5
+
+    for i in range(num_boxes):
+        possible_positions=np.where(room==1)
+        num_possible_positions=possible_positions[0].shape[0]
+        ind=np.random.randint(possible_positions)
+        box_position=possible_positions[0][ind],possible_positions[1][ind]
+        room[box_position]=2
+
+    return room
+
+explored_states=set()
+num_boxes=0
+best_room_score=-1
+best_room=None
+best_box_mapping=None
 
 
+def reverse_playing(room_state,room_structure,search_depth=100):
+    global explored_states,num_boxes,best_room_score,best_room,best_box_mapping
 
+    box_mapping={}
+    box_locations=np.where(room_structure==2)
+    num_boxes=len(box_locations[0])
+    for i in range(num_boxes):
+        box=(box_locations[0][i],box_locations[1][i])
+        box_mapping[box]=box
+
+    explored_states=set()
+    best_room_score=-1
+    best_box_mapping=box_mapping
+    depth_first_search(room_state,room_structure,box_mapping,box_swaps=0,last_pull=(-1,-1),ttl=300)
+
+    return best_room,best_room_score,best_box_mapping
+
+
+def depth_first_search(room_state,room_structure,box_mapping,box_swaps=0,last_pull=(-1,-1),ttl=300):
+    
 

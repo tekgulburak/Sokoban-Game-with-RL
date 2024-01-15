@@ -149,45 +149,60 @@ def reverse_playing(room_state,room_structure,search_depth=100):
 
 
 def depth_first_search(room_state,room_structure,box_mapping,box_swaps=0,last_pull=(-1,-1),ttl=300):
-    global explored_states, num_boxes, best_room_score, best_room, best_box_mapping
 
-    ttl -= 1
-    if ttl <= 0 or len(explored_states) >= 300000:
+    global explored_states,num_boxes,best_room_score,best_room,best_box_mapping
+
+    ttl-=1
+    if ttl<=0 or len(explored_states)>=300000:
         return
 
-    state_tohash = marshal.dumps(room_state)
+    state_tohash=marshal.dumps(room_state)
 
-    # Only search this state, if it not yet has been explored
-    if not (state_tohash in explored_states):
+    if not state_tohash in explored_states:
+        room_score=box_swaps*box_displacement_score(box_mapping)
+        if np.where(room_state==2)[0].shape[0]!=num_boxes:
+            room_score=0
 
-        # Add current state and its score to explored states
-        room_score = box_swaps * box_displacement_score(box_mapping)
-        if np.where(room_state == 2)[0].shape[0] != num_boxes:
-            room_score = 0
-
-        if room_score > best_room_score:
-            best_room = room_state
-            best_room_score = room_score
-            best_box_mapping = box_mapping
+        if room_score>best_room_score:
+            best_room=room_state
+            best_room_score=room_score
+            best_box_mapping=box_mapping
 
         explored_states.add(state_tohash)
 
         for action in ACTION_LOOKUP.keys():
-            # The state and box mapping  need to be copied to ensure
-            # every action start from a similar state.
-            room_state_next = room_state.copy()
-            box_mapping_next = box_mapping.copy()
+            room_state_next=room_state.copy()
+            box_mapping_next=box_mapping.copy()
 
-            room_state_next, box_mapping_next, last_pull_next = \
-                reverse_move(room_state_next, room_structure, box_mapping_next, last_pull, action)
+            room_state_next,box_mapping_next,last_pull_next= \
+                reverse_move(room_state_next,room_structure,box_mapping_next,last_pull,action)
 
-            box_swaps_next = box_swaps
-            if last_pull_next != last_pull:
-                box_swaps_next += 1
+            box_swaps_next=box_swaps
+            if last_pull_next!=last_pull:
+                box_swaps_next+=1
 
-            depth_first_search(room_state_next, room_structure,
-                               box_mapping_next, box_swaps_next,
-                               last_pull, ttl)
+            depth_first_search(room_state_next,room_structure,box_mapping_next,box_swaps_next,last_pull,ttl)
+#copy fonksiyonu örneklerine bak
+#\ ne işe yarıyor
+#global burada ne işe yarıyor
+#genel olarak bir incele
+
+def reverse_move(room_state,room_structure,box_mapping,last_pull,action):
+
+    player_position=np.where(room_state[0]==5)
+    player_position=np.array(player_position[0][0],player_position[1][0])#şunu bir dene değerlere bak
+
+    change=Change_Coordinates[action%4]
+    next_position=player_position+change
+
+    if room_state[next_position[0],next_position[1] in [1,2]]:
+
+        room_state[player_position[0],player_position[1]]=room_structure[player_position[0],player_position[1]]
+        room_state[next_position[0],next_position[1]]=5
+
+
+
+
 
 
 

@@ -182,10 +182,7 @@ def depth_first_search(room_state,room_structure,box_mapping,box_swaps=0,last_pu
                 box_swaps_next+=1
 
             depth_first_search(room_state_next,room_structure,box_mapping_next,box_swaps_next,last_pull,ttl)
-#copy fonksiyonu örneklerine bak
-#\ ne işe yarıyor
-#global burada ne işe yarıyor
-#genel olarak bir incele
+
 
 def reverse_move(room_state,room_structure,box_mapping,last_pull,action):
 
@@ -199,6 +196,26 @@ def reverse_move(room_state,room_structure,box_mapping,last_pull,action):
 
         room_state[player_position[0],player_position[1]]=room_structure[player_position[0],player_position[1]]
         room_state[next_position[0],next_position[1]]=5
+
+        if action<4:
+            possible_box_location=change[0]*-1,change[1]*-1
+            possible_box_location+=player_position
+
+            if room_state[possible_box_location[0],possible_box_location[1]] in [3,4]:
+                room_state[player_position[0],player_position[1]]=3
+                room_state[possible_box_location[0],possible_box_location[1]]=room_structure[possible_box_location[0],possible_box_location[1]]
+
+
+                for k in box_mapping.keys():
+                    if box_mapping[k]==(possible_box_location[0],possible_box_location[1]):
+                        box_mapping[k]=(player_position[0],player_position[1])
+                        last_pull=k
+
+    return room_state,box_mapping,last_pullü
+
+
+
+
 
 
 

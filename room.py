@@ -211,10 +211,46 @@ def reverse_move(room_state,room_structure,box_mapping,last_pull,action):
                         box_mapping[k]=(player_position[0],player_position[1])
                         last_pull=k
 
-    return room_state,box_mapping,last_pullü
+    return room_state,box_mapping,last_pull
+
+def box_displacement_score(box_mapping):
+    score=0
+
+    for box_target in box_mapping.keys():
+        box_location=np.array(box_mapping[box_target])
+        box_target=np.array(box_target)
+        dist=np.sum(np.abs(box_location-box_target))
+        score+=dist
+
+    return score
 
 
+TYPE_LOOKUP={
+    0:"wall",
+    1:"empty space",
+    2:"box target",
+    3:"box on target",
+    4:"box not on target",
+    5:"player"
+}
 
+ACTION_LOOKUP={
+    0:"push up",
+    1:"push down",
+    2:"push left",
+    3:"push right",
+    4:"move up",
+    5:"move down",
+    6:"move left",
+    7:"move right"
+}
+
+CHANGE_COORDINATES={
+    0:(-1,0),
+    1:(1,0),
+    2:(0,-1),
+    3:(0,1)
+}
 
 
 

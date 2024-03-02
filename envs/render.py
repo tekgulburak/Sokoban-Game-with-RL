@@ -154,5 +154,103 @@ def room_to_rgb(room,room_structure):
             else:
                 surface=[11,60,237]
 
+        elif box_id==1:
+            if situation=="target":
+                surface=[195,127,232]
+
+            elif situation=="on_target":
+                surface=[96,5,145]
+
+            elif situation=="on_wrong_target":
+                surface=[96,63,114]
+
+            else:
+                surface=[145,17,214]
 
 
+        elif box_id==2:
+            if situation=="target":
+                surface=[221,113,167]
+
+            elif situation=="on_target":
+                surface=[140,5,72]
+
+            elif situation=="on_wrong_target":
+                surface=[109,60,71]
+
+            else:
+                surface=[239,0,55]
+
+        elif box_id==3:
+            if situation=="target":
+                surface=[247,193,145]
+
+            elif situation=="on_target":
+                surface=[132,64,3]
+
+            elif situation=="on_wrong_target":
+                surface=[94,68,46]
+
+            else:
+                surface=[239,111,0]
+
+        return  surface
+
+    def color_player_two(room_rgb,position,room_structure):
+        resource_package=__name__
+
+        player_filename=pkg_resources.resource_filename(resource_package,"/".join(("surface","multiplayer","player1.png")))
+        player=imageio.imread(player_filename)
+
+        player_on_target_filename = pkg_resources.resource_filename(resource_package,'/'.join(('surface', 'multiplayer','player1_on_target.png')))
+        player_on_target = imageio.imread(player_on_target_filename)
+
+        x_i=position[0]*16
+        y_j=position[1]*16
+
+        if room_structure[position[0],position[1]]==2:
+            room_rgb[x_i:(x_i+16),y_j:(y_j+16), :]=player_on_target
+
+        else:
+            room_rgb[x_i:(x_i+16),y_j:(y_j+16),:]=player
+
+        return room_rgb
+
+    def color_tiny_player_two(room_rgb,position,room_structure,scale=4):
+        x_i=position[0]*scale
+        y_j=position[1]*scale
+
+        if room_structure[position[0],position[1]]==2:
+            room_rgb[x_i:(x_i+scale),y_j:(y_j+scale),:]=[195,127,232]
+
+        else:
+            room_rgb[x_i:(x_i+16),y_j:(y_j+16),:]=[96,5,145]
+
+        return room_rgb
+
+    TYPE_LOOKUP={
+        0:"wall",
+        1:"empty_space",
+        2:"box target",
+        3:"box on target",
+        4:"box not on target",
+        5:"player"
+    }
+
+    ACTION_LOOKUP={
+        0:"push up",
+        1:"push down",
+        2:"push left",
+        3:"push right",
+        4:"move up",
+        5:"move down",
+        6:"move left",
+        7:"move right",
+    }
+
+    CHANGE_COODINATES={
+        0:(-1,0),
+        1:(1,0),
+        2:(0,-1),
+        3:(0,1)
+    }

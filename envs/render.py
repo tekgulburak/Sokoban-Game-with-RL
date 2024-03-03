@@ -228,7 +228,7 @@ def room_to_rgb(room,room_structure):
 
         return room_rgb
 
-    TYPE_LOOKUP={
+    TYPE_LOOKUP= {
         0:"wall",
         1:"empty_space",
         2:"box target",

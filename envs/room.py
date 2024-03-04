@@ -1,10 +1,6 @@
 import random
 import numpy as np
 import marshal
-"""dim=(13,13)
-room_structure=np.zeros(shape=dim)
-room_structure[room_structure == 5] = 1
-room_structure"""
 
 
 def creating_room(dim=(13,13),p_change_directions=0.35,num_steps=25,num_boxes=3,tries=4,second_player=False):
@@ -33,7 +29,7 @@ def creating_room(dim=(13,13),p_change_directions=0.35,num_steps=25,num_boxes=3,
 
     return room_structure,room_state,box_mapping
 
-def room_topology_generation(dim=(10,10)):
+def room_topology_generation(dim=(10, 10), p_change_directions=0.35, num_steps=15):
     dim_x,dim_y=dim
 
     masks=[
@@ -64,7 +60,6 @@ def room_topology_generation(dim=(10,10)):
         ]
 
     ]
-    import random
 
     directions=[(1,0),(0,1),(-1,0),(0,-1)]
     direction=random.sample(directions,1)[0]
@@ -189,7 +184,7 @@ def reverse_move(room_state,room_structure,box_mapping,last_pull,action):
     player_position=np.where(room_state[0]==5)
     player_position=np.array(player_position[0][0],player_position[1][0])#şunu bir dene değerlere bak
 
-    change=Change_Coordinates[action%4]
+    change=CHANGE_COORDINATES[action%4]
     next_position=player_position+change
 
     if room_state[next_position[0],next_position[1] in [1,2]]:

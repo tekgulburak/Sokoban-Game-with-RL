@@ -44,7 +44,7 @@ def room_to_rgb(room,room_structure):
 
     return room_rgb
 
-    def room_to_tiny_world_rgb(room,room_structure=None,scale=1):
+def room_to_tiny_world_rgb(room,room_structure=None,scale=1):
 
         room=np.array(room)
         if not room_structure is None:
@@ -70,7 +70,7 @@ def room_to_rgb(room,room_structure):
 
         return room_small_rgb
 
-    def room_to_rgb_FT(room,box_mapping,room_structure=None):
+def room_to_rgb_FT(room,box_mapping,room_structure=None):
         resource_package=__name__
 
         room=np.array(room)
@@ -120,7 +120,7 @@ def room_to_rgb(room,room_structure):
 
         return room_rgb
 
-    def get_proper_box_surface(surfaces_id,box_mapping,i,j):
+def get_proper_box_surface(surfaces_id,box_mapping,i,j):
         box_id=0
         situation=""
         if surfaces_id==2:
@@ -196,7 +196,7 @@ def room_to_rgb(room,room_structure):
 
         return  surface
 
-    def color_player_two(room_rgb,position,room_structure):
+def color_player_two(room_rgb,position,room_structure):
         resource_package=__name__
 
         player_filename=pkg_resources.resource_filename(resource_package,"/".join(("surface","multiplayer","player1.png")))
@@ -216,7 +216,7 @@ def room_to_rgb(room,room_structure):
 
         return room_rgb
 
-    def color_tiny_player_two(room_rgb,position,room_structure,scale=4):
+def color_tiny_player_two(room_rgb,position,room_structure,scale=4):
         x_i=position[0]*scale
         y_j=position[1]*scale
 
@@ -228,7 +228,7 @@ def room_to_rgb(room,room_structure):
 
         return room_rgb
 
-    TYPE_LOOKUP= {
+TYPE_LOOKUP= {
         0:"wall",
         1:"empty_space",
         2:"box target",
@@ -237,7 +237,7 @@ def room_to_rgb(room,room_structure):
         5:"player"
     }
 
-    ACTION_LOOKUP={
+ACTION_LOOKUP={
         0:"push up",
         1:"push down",
         2:"push left",
@@ -248,7 +248,7 @@ def room_to_rgb(room,room_structure):
         7:"move right",
     }
 
-    CHANGE_COODINATES={
+CHANGE_COODINATES={
         0:(-1,0),
         1:(1,0),
         2:(0,-1),
